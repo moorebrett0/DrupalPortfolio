@@ -23,7 +23,7 @@ function gattaca_form() {
         '#title' => 'Enter in a Sequence to generate the Double Helix',
         '#type' => 'textfield',
         '#description' => t('Please enter your DNA sequence'),
-        '#element_validate' => array('gattaca_validate'),
+        '#element_validate' => array('element_validate_gattaca'),
         '#required' => TRUE,
     );
     $form['submit'] = array(
@@ -33,11 +33,18 @@ function gattaca_form() {
     return $form;
 }
 
-function gattaca_validate(){
-    if (!'A' && !'G' && !'C' && !'T') {
-        drupal_set_message("Please use A, G, T or C");
+function element_validate_gattaca($element){
+    $input = $element['#value'];
+    $valid_input = array('A', 'G', 'T', 'C');
+    $input = str_split($input);
+    foreach ($input as $i){
+        if (!in_array($i, $valid_input)) {
+        form_error($element, t("Please use A G T or C, sequences are CASE Sensitive."));
+            }
     }
+
 }
+
 
 function gattaca_maker($input){
     strtoupper($input);
