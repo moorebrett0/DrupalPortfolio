@@ -1,0 +1,5 @@
+name = Brett's node loader
+description = Using Ajax to display a block
+package = Brett's Creations
+core = 7.x
+files[] = mymodule.module
