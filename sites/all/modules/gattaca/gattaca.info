@@ -1,0 +1,7 @@
+name = Gattaca
+description = Prints out the other side of a double helix
+package = Brett's Creations
+core = 7.x
+files[] = gattaca.module
+files[] = gattaca.test
+dependencies[] = simpletest

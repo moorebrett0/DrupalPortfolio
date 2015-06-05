@@ -1,0 +1,27 @@
+<?php
+    class GattacaTests extends DrupalUnitTestCase {
+        public static function getInfo() {
+            return array(
+                'name' => 'Gattaca unit tests',
+                'description' => 'Test that gattaca_maker works',
+                'group' => 'ATGC',
+            );
+        }
+        function testMakeSequence() {
+            $result = gattaca_maker('G');
+            $second = 'C';
+            $message = 'Should return "C"';
+            $this->assertEqual($result, $second, $message);
+
+            $result = gattaca_maker('T');
+            $second = 'A';
+            $message = 'Should return "A"';
+            $this->assertEqual($result, $second, $message);
+
+            $result = gattaca_maker('GATTACA');
+            $second = 'CTAATGT';
+            $message = 'Should return "CTAATGT"';
+            $this->assertEqual($result, $second, $message);
+        }
+        
+}

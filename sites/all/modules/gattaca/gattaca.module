@@ -1,0 +1,82 @@
+<?php
+
+function gattaca_menu() {
+    $items = array();
+    $items['gattaca'] = array(
+        'title' => 'Gattaca Generator',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('gattaca_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['gattaca_success'] = array(
+        'title' => 'Success',
+        'page callback' => 'gattaca_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function gattaca_form() {
+    $form['input'] = array(
+        '#title' => 'Enter in a Sequence to generate the Double Helix',
+        '#type' => 'textfield',
+        '#description' => t('Please enter your DNA sequence'),
+        '#element_validate' => array('gattaca_validate'),
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Double Helix Sequence',
+    );
+    return $form;
+}
+
+function gattaca_validate(){
+    if (!'A' && !'G' && !'C' && !'T') {
+        drupal_set_message("Please use A, G, T or C");
+    }
+}
+
+function gattaca_maker($input){
+    strtoupper($input);
+    $split = str_split($input);
+    $sequence = array();
+    $nucleo = "";
+
+    foreach($split as $i) {
+        if ($i == 'G') {
+            $nucleo = 'C';
+        }
+        elseif ($i == 'C'){
+            $nucleo = 'G';
+        }
+        elseif ($i == 'A'){
+            $nucleo = 'T';
+        }
+        elseif ($i == 'T'){
+            $nucleo = 'A';
+        }
+
+        $helix = array_push($sequence, $nucleo);
+
+    }
+    $result = implode($sequence);
+    return $result;
+}
+
+function gattaca_form_submit($form, &$form_state) {
+    $input = $form_state['values']['input'];
+    $result = gattaca_maker($input);
+    $_SESSION['gatc'] = $result;
+    $_SESSION['original'] = $input;
+
+    $form_state['redirect'] = 'gattaca_success';
+}
+
+function gattaca_success() {
+    $new = $_SESSION['gatc'];
+    $original = $_SESSION['original'];
+    return '<p>Your Doublehelix: </br><p>' . $new . '</p></br><p> ' . strtoupper($original) . '</p>';
+}
